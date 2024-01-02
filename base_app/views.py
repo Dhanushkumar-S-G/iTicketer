@@ -98,7 +98,7 @@ def pay_show(request):
             if request.method == "POST" or "GET":
                 usr = request.user    
                 firstname = usr.username
-                title = "JANANAM 2023"
+                title = "JANANAM 2024"
                 amount = settings.GENERAL_ENTRANCE_FEE
                 email = usr.email
                 mkey = settings.PAYU_INFO['merchant_key']
