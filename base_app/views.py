@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
 from django.contrib.auth import logout
 from django.contrib import messages
-from .models import Booking,Transaction
+from .models import *
 from django.conf import settings
 from hashlib import sha512
 from django.urls import reverse
@@ -16,6 +16,10 @@ from uuid import uuid1
 from django.core.exceptions import SuspiciousOperation
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
+from rest_framework.decorators import api_view
+from django.http import JsonResponse
+
 # Create your views here.
 def index(request):
     return render(request,'base_app/index.html')
@@ -27,6 +31,8 @@ def dashboard(request):
         usr = request.user
         try:
             context['booking'] = Booking.objects.get(user=usr)
+            context['request'] = request
+            
         except Exception as e:
             context['booking'] = None
         return render(request,'base_app/dashboard.html',context)
@@ -215,3 +221,40 @@ def cancel(request):
 def logout_user(request):
     logout(request)
     return redirect("/")
+
+@api_view(['GET'])
+def check_profile(request,id):
+    user = User.objects.get(id=id)
+    try:
+        prf = Profile.objects.get(user=user)
+        if prf:
+            return JsonResponse({'status':True,'message':'Profile is complete','data':True})
+        else:
+            return JsonResponse({'status':False,'message':'Profile is not complete','data':False})
+    except Exception as e:
+        return JsonResponse({'status':False,'message':'Profile is not complete','error':str(e)})
+    return JsonResponse({'status':False,'message':'Profile is not complete','error':str(e)})
+    
+@api_view(['POST'])
+def create_profile(request):
+    if request.method == 'POST':
+        print(request.POST)
+        try:
+            print('hii')
+            phone_number = request.POST.get('phone_number')
+            is_transport = request.POST.get('is_transport')
+            user = request.user
+            
+            user_id = user.id
+            
+            id = f'JNM{user_id:03d}'
+           
+            if is_transport == 'on':
+                is_transport = True
+            else:
+                is_transport = False
+            Profile.objects.create(user=user,phone=phone_number,is_transport_needed=is_transport,jnm_id=id)            
+            return redirect('dashboard')
+        except Exception as e:
+            print(str(e))
+            return redirect('dashboard')
