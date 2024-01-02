@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <title>Redirecting...</title>
+  </head>
+  <body>
+    <form action="https://secure.payu.in/_payment" method="post" name="payu">
+      <input type="hidden" name="firstname" value="{{ form.firstname }}" />
+      <input type="hidden" name="surl" value="{{ form.surl }}" />
+      <input type="hidden" name="phone" value="{{ form.phone }}" />
+      <input type="hidden" name="key" value="{{ form.key }}" />
+      <input type="hidden" name="hash" value="{{ form.hash }}" />
+      <input type="hidden" name="curl" value="{{ form.curl }}" />
+      <input type="hidden" name="furl" value="{{ form.furl }}" />
+      <input type="hidden" name="txnid" value="{{ form.txnid }}" />
+      <input type="hidden" name="productinfo" value="{{ form.productinfo }}" />
+      <input type="hidden" name="amount" value="{{ form.amount }}" />
+      <input type="hidden" name="email" value="{{ form.email }}" />
+      <input type="hidden" name="service_provider" value="" />
+      <input type="hidden" value="submit" />
+    </form>
+  </body>
+  <script language="javascript">
+    window.onload = function () {
+      document.forms['payu'].submit();
+    };
+  </script>
+</html>
