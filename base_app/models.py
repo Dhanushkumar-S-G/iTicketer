@@ -16,7 +16,7 @@ class Transaction(models.Model):
     mihpay_id = models.CharField(max_length=30, null=True)  # don't know the use
     payu_status = models.BooleanField(default=0)  # 0-failure, 1-success
     status = models.IntegerField(choices=STATUS_CHOICES, default=INITIATED)
-    user = models.ForeignKey(User, related_name='related_paid', null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(User, related_name='related_paid', null=True, on_delete=models.SET_NULL, default=None)
     amount = models.IntegerField()
     name = models.CharField(max_length=255)  # product_info
     error_code = models.CharField(max_length=255, null=True)
@@ -39,18 +39,7 @@ class Transaction(models.Model):
         return self.name
     
 class Booking(models.Model):
-    SUCCESS = 'Success'
-    FAILED = 'Failed'
-
-    STATUS_CHOICES = (
-        (SUCCESS,'Success'),
-        (FAILED,'Failed'),
-    )
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    purchase_date = models.DateTimeField(auto_now_add=True)
-
+    transaction = models.ForeignKey(Transaction,on_delete=models.CASCADE,null=True)
     def __str__(self):
         return self.user.first_name
-    
-
-
