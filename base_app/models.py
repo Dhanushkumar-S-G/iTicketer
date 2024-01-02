@@ -43,3 +43,9 @@ class Booking(models.Model):
     transaction = models.ForeignKey(Transaction,on_delete=models.CASCADE,null=True)
     def __str__(self):
         return self.user.first_name
+class MaintenanceDataStore(models.Model):
+    IS_ONLINE = 0
+    IS_UNDER_MAINTENANCE = 1
+
+    STATUS_CHOICES = ((IS_ONLINE, "ONLINE"), (IS_UNDER_MAINTENANCE, "MAINTENANCE"))
+    status = models.PositiveSmallIntegerField(default=IS_ONLINE, choices=STATUS_CHOICES)

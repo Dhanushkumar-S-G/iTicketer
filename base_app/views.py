@@ -5,7 +5,10 @@ from django.contrib.auth import authenticate,login
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
+from django.contrib.auth import logout
 from django.contrib import messages
+
+from base_app.tasks import send_whatsapp_msg
 from .models import Booking,Transaction
 from django.conf import settings
 from hashlib import sha512
@@ -18,16 +21,14 @@ from django.shortcuts import get_object_or_404
 from datetime import datetime
 # Create your views here.
 def index(request):
-    return render(request,'base_app/index.html')
-
-def is_payment_enable(request):
-
+    context = {}
     last_date = datetime(2024, 1, 4).date()
     current_date = datetime.now().date()
     no_of_bookings = Booking.objects.all().count()
     if current_date > last_date or no_of_bookings >= 900 :
         messages.warning(request,"Payment has been closed")
         is_payment_enabled = False
+        print("payment enabled")
         return redirect('/dashboard')
     else:
         is_payment_enabled = True
@@ -35,9 +36,12 @@ def is_payment_enable(request):
             amount = 150
         else:
             amount = 250
+    
+        # context['booking'] = None
+        context['amount'] = amount
+    return render(request,'base_app/index.html',context)
 
-    return (is_payment_enabled,amount)
-
+@login_required()
 def dashboard(request):
     context = {}
     try:
@@ -45,12 +49,29 @@ def dashboard(request):
         try:
             context['booking'] = Booking.objects.get(user=usr)
         except Exception as e:
-            is_payment_enable,amount = is_payment_enable(request)
-            context['booking'] = None
+            last_date = datetime(2024, 1, 4).date()
+            current_date = datetime.now().date()
+            no_of_bookings = Booking.objects.all().count()
+            if current_date > last_date or no_of_bookings >= 900 :
+                messages.warning(request,"Payment has been closed")
+                is_payment_enabled = False
+                print("payment enabled")
+                return redirect('/dashboard')
+            else:
+                is_payment_enabled = True
+                if current_date < last_date:
+                    amount = 150
+                else:
+                    amount = 250
+            context = {
+                'booking' : None,
+                'enabled' : is_payment_enabled,
+                'amount'  : amount,
+            }
         return render(request,'base_app/dashboard.html',context)
     except Exception as e:
         print(e)
-        return redirect('/login')
+        return redirect('/')
 
 KEYS = ('txnid', 'amount', 'productinfo', 'firstname', 'email',
         'udf1', 'udf2', 'udf3', 'udf4', 'udf5', 'udf6', 'udf7', 'udf8',
@@ -104,10 +125,28 @@ def verify_hash(data):
 
     return hash_value.hexdigest().lower() == data.get('hash')
 
+@login_required()
 def pay_show(request):
     try:
-            is_payment_enable,amount = is_payment_enable()
-            usr = request.user  
+            # payment_enable,amount = is_payment_enable(request)
+            # print(is_payment_enable())
+            last_date = datetime(2024, 1, 4).date()
+            current_date = datetime.now().date()
+            no_of_bookings = Booking.objects.all().count()
+            usr = request.user
+            if current_date > last_date or no_of_bookings >= 900 :
+                messages.warning(request,"Payment has been closed")
+                is_payment_enabled = False
+                print("payment enabled")
+                return redirect('/dashboard')
+            else:
+                is_payment_enabled = True
+                if current_date < last_date:
+                    amount = 150
+                else:
+                    amount = 250
+                    usr = request.user
+        
             isBooking = Booking.objects.filter(user=usr).exists()
             if isBooking:
                 messages.success(request, 'You have already booked a show')
@@ -130,7 +169,7 @@ def pay_show(request):
                     Transaction.objects.create(txnid=txnid, status=Transaction.INITIATED, user=usr,
                                             amount=amount,
                                             name=title)
-                    return render(request, 'base_app/pay_redirect.html', {'form': data,'amount':amount})
+                    return render(request, 'base_app/pay_redirect.html', {'form': data,'amount':amount,'enabled':is_payment_enabled})
                 else:
                     raise SuspiciousOperation("Invalid request")
     except Exception as e:
@@ -191,7 +230,8 @@ def succ_pay(request):
             trns.save()
             booking = Booking.objects.create(user=trns.user, transaction=trns)
             booking.save()
-            messages.success(request, 'Payment Cancelled Successfully!')
+            messages.success(request, 'Payment Successfull!')
+            send_whatsapp_msg.delay(to=)
             return redirect('/dashboard')
         else:
             print('Date tampered')
@@ -228,3 +268,7 @@ def cancel(request):
     else:
         raise SuspiciousOperation("Invalid access")
 
+
+def logout_user(request):
+    logout(request)
+    return redirect("/")

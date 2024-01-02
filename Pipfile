@@ -7,6 +7,14 @@ name = "pypi"
 django = "*"
 django-microsoft-authentication = "*"
 django-bootstrap-v5 = "*"
+django-microsoft-auth = "*"
+python-oauth2 = "*"
+pyyaml = "*"
+python-dateutil = "*"
+msal = "*"
+celery = "*"
+django-celery-beat = "*"
+redis = "*"
 
 [dev-packages]
 
