@@ -4,10 +4,10 @@ RUN mkdir -p /usr/src/app
 
 WORKDIR /usr/src/app
 
-COPY Pipfile /usr/src/app/
+RUN apt-get update
 
-RUN pip install pipenv
+COPY requirements.txt /usr/src/app/
 
-RUN pipenv install
+RUN pip install --default-timeout=100 --no-cache-dir -r requirements.txt
 
 COPY . /usr/src/app
