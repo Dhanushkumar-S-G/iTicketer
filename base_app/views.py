@@ -20,6 +20,7 @@ from django.shortcuts import get_object_or_404
 def index(request):
     return render(request,'base_app/index.html')
 
+@login_required
 def dashboard(request):
     context = {}
     try:
@@ -85,6 +86,7 @@ def verify_hash(data):
 
     return hash_value.hexdigest().lower() == data.get('hash')
 
+@login_required
 def pay_show(request):
     try:
         usr = request.user
