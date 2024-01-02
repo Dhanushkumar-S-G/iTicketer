@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login
 from django.shortcuts import redirect
+from django.contrib.auth import logout
 # Create your views here.
 def index(request):
     return render(request,'base_app/index.html')
@@ -28,3 +29,7 @@ def callback(request):
           messages.success(request,"Success: You were successfully logged in.")
           return redirect('home')
       return redirect('home')
+
+def logout_user(request):
+    logout(request)
+    return redirect("/")

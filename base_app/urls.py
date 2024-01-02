@@ -3,5 +3,7 @@ from base_app.views import *
 urlpatterns = [
     path('', index, name='index'),
     path('dashboard/', dashboard, name='dashboard'),
-    path('callback/', callback, name='callback')
+    path('logout/', logout_user, name='logout'),
+    
+   
 ]

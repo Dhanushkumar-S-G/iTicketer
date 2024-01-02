@@ -34,24 +34,13 @@ MEDIA_URL = '/media/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
-
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
 #Microsoft Authentication
-MICROSOFT = {    
-"app_id": "3f75cf34-ff60-4f9d-b3d3-e65721595b56",    
-"app_secret": "7d46537c-4f60-47c1-a87b-a4a6f83b9eec",
-"tenant_id": "f8cdef31-a31e-4b4a-93e4-5f571e91255a",    
-"redirect": "http://localhost:8000/callback",    
-"scopes": ["user.read"],    
-"authority": "https://login.microsoftonline.com/common",
-"valid_email_domains": ["<list_of_valid_domains>"],    
-"logout_uri": "http://localhost:8000/"    
-}    
-LOGIN_URL = "/login"
-LOGIN_REDIRECT_URL = "/"
+  
 
 # Application definition
-
+SOCIAL_AUTH_JSONFIELD_ENABLED = True
 INSTALLED_APPS = [
     'base_app',
     'django.contrib.admin',
@@ -61,16 +50,21 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap5',
+    'social_django',
+    'corsheaders',
+ 
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "iTicketer.middleware.MaintenanceMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 ROOT_URLCONF = 'iTicketer.urls'
@@ -83,11 +77,11 @@ TEMPLATES = [
         ],
         'APP_DIRS': True,
         'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+           "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
@@ -147,3 +141,33 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.open_id.OpenIdAuth',
+    "social_core.backends.azuread.AzureADOAuth2",
+    "django.contrib.auth.backends.ModelBackend",
+)
+
+
+# SOCIAL_AUTH_REQUIRE_POST = True
+
+LOGIN_URL = "/"
+LOGIN_REDIRECT_URL = "/dashboard"
+LOGOUT_REDIRECT_URL = "/"
+
+SOCIAL_AUTH_AZUREAD_OAUTH2_KEY = "bf89b302-3eb7-42f1-adfd-d4fdbffa1bdd"
+# SOCIAL_AUTH_AZUREAD_OAUTH2_KEY = "bf89b302-3eb7-42f1-adfd-d4fdbffa1bdd"
+SOCIAL_AUTH_AZUREAD_OAUTH2_SECRET = "YKl8Q~p8GE-7CQhregcTEPjRbFHn0~Sqdr6jqaK4"
+
+SOCIAL_AUTH_PIPELINE = [
+    "social_core.pipeline.social_auth.social_details",
+    "social_core.pipeline.social_auth.social_uid",
+    "social_core.pipeline.social_auth.auth_allowed",
+    # "iTicketer.pipeline.social_user",
+    # "social.pipeline.social_auth.social_user",
+    "social_core.pipeline.user.get_username",
+    "social.pipeline.user.create_user",
+    "social_core.pipeline.social_auth.associate_user",
+    "social_core.pipeline.social_auth.load_extra_data",
+    "social_core.pipeline.user.user_details",
+]
