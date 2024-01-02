@@ -28,13 +28,17 @@ def index(request):
 def dashboard(request):
     context = {}
     try:
+        BASE_URL = settings.BASE_URL
+        print(BASE_URL)
         usr = request.user
+        context['base_url'] = BASE_URL
         try:
             context['booking'] = Booking.objects.get(user=usr)
             context['request'] = request
             
         except Exception as e:
             context['booking'] = None
+            print(str(e))
         return render(request,'base_app/dashboard.html',context)
     except Exception as e:
         print(e)

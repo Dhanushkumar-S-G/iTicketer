@@ -34,7 +34,7 @@
           
 
             {% if user.is_authenticated %}
-
+ <input type="text" class="form-control" name="base_url" value = "{{base_url}}" id="base_url" hidden>
 <!--  -->
 <<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" hidden id="formButton">
   Launch static backdrop modal
@@ -128,7 +128,8 @@
     async function fetchData() {
         // Replace 'your_base_url' with the actual base URL of your Django application
         const userId = document.getElementById('user_id').value;
-        const baseUrl = 'http://localhost:8000/';
+        const baseUrl = document.getElementById('base_url').value;
+        console.log(baseUrl);
         
 
 

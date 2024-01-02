@@ -25,6 +25,8 @@ SECRET_KEY = 'django-insecure-i-&^*zfblm6pr60)flm*m4ed1b+b58r6o+buozbvar&5rimoay
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = not IS_PRODUCTION
+BASE_URL = 'https://10.1.76.75:6001/' if IS_PRODUCTION else 'http://localhost:8000/'
+
 
 ALLOWED_HOSTS = ['*']
 
