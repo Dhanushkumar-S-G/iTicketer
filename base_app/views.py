@@ -15,9 +15,28 @@ from uuid import uuid1
 from django.core.exceptions import SuspiciousOperation
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
+from datetime import datetime
 # Create your views here.
 def index(request):
     return render(request,'base_app/index.html')
+
+def is_payment_enable(request):
+
+    last_date = datetime(2024, 1, 4).date()
+    current_date = datetime.now().date()
+    no_of_bookings = Booking.objects.all().count()
+    if current_date > last_date or no_of_bookings >= 900 :
+        messages.warning(request,"Payment has been closed")
+        is_payment_enabled = False
+        return redirect('/dashboard')
+    else:
+        is_payment_enabled = True
+        if current_date < last_date:
+            amount = 150
+        else:
+            amount = 250
+
+    return (is_payment_enabled,amount)
 
 def dashboard(request):
     context = {}
@@ -26,6 +45,7 @@ def dashboard(request):
         try:
             context['booking'] = Booking.objects.get(user=usr)
         except Exception as e:
+            is_payment_enable,amount = is_payment_enable(request)
             context['booking'] = None
         return render(request,'base_app/dashboard.html',context)
     except Exception as e:
@@ -86,33 +106,33 @@ def verify_hash(data):
 
 def pay_show(request):
     try:
-        usr = request.user
-        isBooking = Booking.objects.filter(user=usr).exists()
-        if isBooking:
-            messages.success(request, 'You have already booked a show')
-            return redirect('/dashboard')
-        else:
-            if request.method == "POST" or "GET":
-                usr = request.user    
-                firstname = usr.username
-                title = "JANANAM 2023"
-                amount = settings.GENERAL_ENTRANCE_FEE
-                email = usr.email
-                mkey = settings.PAYU_INFO['merchant_key']
-                surl = request.build_absolute_uri(reverse('succ_pay'))
-                curl = request.build_absolute_uri(reverse('cancel'))
-                furl = request.build_absolute_uri(reverse('failure'))
-                txnid = str(uuid1().int >> 64)  # converted to 20 digits uuid
-                # sha512(key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5||||||salt)
-                data = dict(key=mkey, txnid=txnid, amount=amount, productinfo=title, firstname=firstname, email=email)
-                hash = generate_hash(data)
-                data.update({'hash': hash, 'surl': surl, 'curl': curl, 'furl': furl})
-                Transaction.objects.create(txnid=txnid, status=Transaction.INITIATED, user=usr,
-                                        amount=amount,
-                                        name=title)
-                return render(request, 'base_app/pay_redirect.html', {'form': data})
+            is_payment_enable,amount = is_payment_enable()
+            usr = request.user  
+            isBooking = Booking.objects.filter(user=usr).exists()
+            if isBooking:
+                messages.success(request, 'You have already booked a show')
+                return redirect('/dashboard')
             else:
-                raise SuspiciousOperation("Invalid request")
+                if request.method == "POST" or "GET":
+                    usr = request.user    
+                    firstname = usr.username
+                    title = "JANANAM 2023"
+                    email = usr.email
+                    mkey = settings.PAYU_INFO['merchant_key']
+                    surl = request.build_absolute_uri(reverse('succ_pay'))
+                    curl = request.build_absolute_uri(reverse('cancel'))
+                    furl = request.build_absolute_uri(reverse('failure'))
+                    txnid = str(uuid1().int >> 64)  # converted to 20 digits uuid
+                    # sha512(key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5||||||salt)
+                    data = dict(key=mkey, txnid=txnid, amount=amount, productinfo=title, firstname=firstname, email=email)
+                    hash = generate_hash(data)
+                    data.update({'hash': hash, 'surl': surl, 'curl': curl, 'furl': furl})
+                    Transaction.objects.create(txnid=txnid, status=Transaction.INITIATED, user=usr,
+                                            amount=amount,
+                                            name=title)
+                    return render(request, 'base_app/pay_redirect.html', {'form': data,'amount':amount})
+                else:
+                    raise SuspiciousOperation("Invalid request")
     except Exception as e:
         print(e)
         return redirect('/dashboard')
