@@ -1,0 +1,1 @@
+celery -A iTicketer_worker worker -B -l info --autoscale=10,1

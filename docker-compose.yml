@@ -1,0 +1,55 @@
+web:
+  container_name: iTicketer_web
+  restart: always
+  build: .
+  ports:
+    - 23030:8000
+  expose:
+    - 8000
+  env_file: production.env
+  volumes:
+    - iTicketer_media_data:/usr/src/app/media
+  links:
+    - postgres:postgres
+    - redis:redis
+  command: sh '/usr/src/app/run_web.sh'
+
+postgres:
+  container_name: iTicketer_postgres
+  restart: always
+  image: postgres:latest
+  env_file: production.env
+  ports:
+    - 23433:5432
+  volumes:
+    - iTicketer_postgres:/var/lib/postgresqql/data/
+
+flower:
+  container_name: iTicketer_flower
+  restart: always
+  command: sh '/usr/src/app/run_flower.sh'
+  build: .
+  ports:
+    - 23666:5555
+  links:
+    - redis:redis
+    - postgres:postgres
+
+redis:
+  container_name: iTicketer_redis
+  restart: always
+  image: redis:latest
+  ports:
+    - 23766:6379
+
+worker:
+  container_name: iTicketer_worker
+  build: .
+  restart: always
+  command: sh '/usr/src/app/run_celery.sh'
+  env_file: production.env
+  links:
+    - redis:redis
+    - postgres:postgres
+  volumes:
+    - iTicketer_media_data:/usr/src/app/media

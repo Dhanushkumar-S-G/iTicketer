@@ -1,0 +1,1 @@
+docker-compose build && docker-compose up -d && docker exec -it iTicketer_web bash postgresql_install.sh
