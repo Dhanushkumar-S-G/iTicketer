@@ -6,6 +6,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'index.css' %}" />
+    <link rel="manifest" href="{% static 'manifest.json' %}" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta.2/css/bootstrap.css"
@@ -14,7 +15,8 @@
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
     />
-    <title>JANANAM 2023</title>
+  <script>navigator.serviceWorker.register("static/pwabuilder-adv-sw.js")</script> 
+    <title>JANANAM 2024</title>
   </head>
   <body>
     {% include 'messages.html' %}
@@ -23,7 +25,7 @@
         class="navbar navbar-expand-md navbar-dark bg-dark-secondary position-fixed top-0 left-0 w-100"
       >
         <div class="container">
-          <a class="navbar-brand" href="/">JANANAM 2023</a>
+          <a class="navbar-brand" href="/">JANANAM 2024</a>
           <button
             class="navbar-toggler"
             type="button"

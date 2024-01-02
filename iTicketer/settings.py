@@ -9,12 +9,13 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+IS_PRODUCTION = os.environ.get('IS_PRODUCTION', False)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -23,9 +24,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-i-&^*zfblm6pr60)flm*m4ed1b+b58r6o+buozbvar&5rimoay'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = not IS_PRODUCTION
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+CSRF_TRUSTED_ORIGINS = ['https://jananam.iqubekct.ac.in', 'http://10.1.76.75']
 
 import os
 from django.contrib.messages import constants as messages
@@ -42,6 +45,8 @@ MESSAGE_TAGS = {
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
+STATIC_ROOT = 'static_files/'
+
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
@@ -51,7 +56,7 @@ SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
 GENERAL_ENTRANCE_FEE = 1
 
-if not DEBUG:
+if IS_PRODUCTION:
     
     PAYU_INFO = {
         'merchant_key': "QlHn7C",
@@ -135,12 +140,25 @@ WSGI_APPLICATION = 'iTicketer.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if IS_PRODUCTION:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.environ.get('DB_NAME'),
+            'USER': os.environ.get('POSTGRES_USER'),
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+            'HOST': 'postgres',
+            'PORT': os.environ.get('POSTGRES_PORT')
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+            'ATOMIC_REQUESTS': True,
+        }
+    }
 
 
 # Password validation

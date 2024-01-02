@@ -1,0 +1,47 @@
+{
+  "id": "/",
+  "dir": "ltr",
+  "lang": "en",
+  "name": "JANANAM",
+  "scope": "/",
+  "display": "standalone",
+  "start_url": "/",
+  "short_name": "JANANAM",
+  "theme_color": "#474747",
+  "description": "JANANAM",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "display_override": ["window-controls-overlay"],
+  "screenshots": [
+    {
+      "src": "assets/screen.png"
+    },
+    {
+      "src": "assets/screen.png"
+    },
+    {
+      "src": "assets/screen.png"
+    }
+  ],
+  "features": ["Cross Platform", "low-latency inking", "fast", "useful AI"],
+  "icons": [
+    {
+      "src": "static/icons/512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["productivity"],
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "edge_side_panel": {}
+}
