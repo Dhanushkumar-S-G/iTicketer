@@ -1,12 +1,96 @@
+{%load static %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'index.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta.2/css/bootstrap.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+    />
+    <title>JANANAM 2023</title>
   </head>
   <body>
-    <h1>Landing Site</h1>
-    <a href="{% url 'social:begin' 'azuread-oauth2' %}">login+</a>
+    {% include 'messages.html' %}
+    <header>
+      <nav
+        class="navbar navbar-expand-md navbar-dark bg-dark-secondary position-fixed top-0 left-0 w-100"
+      >
+        <div class="container">
+          <a class="navbar-brand" href="/">JANANAM 2023</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarCollapse"
+            aria-controls="navbarCollapse"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav ml-auto">
+              {%if user.is_authenticated %}
+              <li class="nav-item active">
+                <a
+                  class="nav-link text-uppercase font-weight-100 letter-spacing-4px"
+                  href="/dashboard"
+                  >Bookings
+                  <span class="sr-only">(current)</span>
+                </a>
+              </li>
+              {% else %}
+              <li class="nav-item active">
+                <a
+                  class="nav-link text-uppercase font-weight-100 letter-spacing-4px"
+                  href="/login"
+                  >Login
+                  <span class="sr-only">(current)</span>
+                </a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="background grid grid-center" id="showcase-background-1">
+        <div
+          class="container text-white d-flex align-items-center justify-content-center"
+          style="flex-direction: column"
+        >
+          <h1 class="display-2 mb-3">Tickets On Sale Now!</h1>
+          <div class="row">
+            <center>
+              <p>
+                Get ready for the most anticipated Jazz Concert of the year. See
+                your favorite local artists come together like never before.
+              </p>
+            </center>
+          </div>
+          <br />
+          <br />
+          <a
+            class="pr-5 pl-5 pt-2 pb-2 text-white btn text-uppercase font-weight-bold btn-gradient"
+            href="book_show/"
+            >Book Now</a
+          >
+        </div>
+      </section>
+    </main>
+
+    <footer class="d-flex align-items-center justify-content-center">
+      <p class="footer bg-white">Made with ❤️ at iQube 💙</p>
+    </footer>
+    <script src="{%static 'index.js' %}"></script>
   </body>
 </html>

@@ -1,0 +1,76 @@
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+  background: #182430;
+}
+
+.font-weight-100 {
+  font-weight: 100;
+}
+
+.letter-spacing-4px {
+  letter-spacing: 4px;
+}
+
+.bg-dark-primary {
+  background-color: #182430;
+}
+
+.bg-dark-secondary {
+  background-color: #071116;
+}
+
+.background {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+#showcase-background-1 {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('/static/bg2.png');
+  height: calc(100vh - 25px);
+}
+
+#showcase-background-2 {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('/static/bg2.png');
+}
+.btn-gradient {
+  background: linear-gradient(217deg, #f8174b, #7f1fa3 70.71%);
+  border: 1px solid rgba(72, 48, 48, 0.5);
+}
+.cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.grid {
+  display: grid;
+}
+
+.grid-center {
+  place-items: center;
+}
+
+.text-red {
+  color: #f8174b;
+}
+
+a.text-red:hover {
+  color: #f8174b;
+}
+
+.btn-outline-red {
+  border: 1px solid #f8174b;
+  background: transparent;
+}
+.footer {
+  height: 25px;
+  position: absolute;
+  text-align: center;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}

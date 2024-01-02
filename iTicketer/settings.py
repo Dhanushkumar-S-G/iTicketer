@@ -27,6 +27,17 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+import os
+from django.contrib.messages import constants as messages
+
+
+MESSAGE_TAGS = {
+        messages.DEBUG: 'alert-secondary',
+        messages.INFO: 'alert-info',
+        messages.SUCCESS: 'alert-success',
+        messages.WARNING: 'alert-warning',
+        messages.ERROR: 'alert-danger',
+ }
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
@@ -35,6 +46,36 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
+#Payu
+
+GENERAL_ENTRANCE_FEE = 1
+
+if not DEBUG:
+    
+    PAYU_INFO = {
+        'merchant_key': "QlHn7C",
+        'merchant_salt': "Z8llz8rm",
+        'payment_url': 'https://secure.payu.in/_payment',
+        'authorization': 'EBLRslXs/+3cUaKuDz7IyZoT2K17aJ8r4kpR0u2aMjo=',
+    }
+    PAYU_MERCHANT_KEY = "QlHn7C"
+
+else:
+
+    
+    PAYU_INFO = {
+
+    'merchant_key': "ZLvSOt",
+
+    'merchant_salt': "TmooTx5BZ3piygXAgjna5vT5I7y4IkRF",
+
+    'payment_url': 'https://test.payu.in/_payment',
+
+    'authorization': 'EBLRslXs/+3cUaKuDz7IyZoT2K17aJ8r4kpR0u2aMjo=',
+
+    }
+
 
 #Microsoft Authentication
   
