@@ -50,6 +50,7 @@ def index(request):
 def dashboard(request):
     context = {}
     try:
+        
         BASE_URL = settings.BASE_URL
         print(BASE_URL)
         usr = request.user
@@ -100,7 +101,10 @@ def dashboard(request):
                 'booking' : None,
                 'enabled' : is_payment_enabled,
                 'amount'  : amount,
+                
             }
+            context['tickets'] = Tickets.objects.filter(is_filled=False)
+
         return render(request,'base_app/dashboard.html',context)
     except Exception as e:
         print(e)
@@ -184,8 +188,14 @@ def pay_show(request):
             if isBooking:
                 messages.success(request, 'You have already booked a show')
                 return redirect('/dashboard')
+            
             else:
+
                 if request.method == "POST" or "GET":
+                    if 'ticket' in request.POST:
+                        ticket_id = request.POST.get('ticket')
+                        ticket = Tickets.objects.get(id=ticket_id)
+                        amount = ticket.price    
                     usr = request.user    
                     firstname = usr.username
                     title = "JANANAM 2023"
