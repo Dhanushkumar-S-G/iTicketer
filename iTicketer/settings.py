@@ -25,6 +25,8 @@ SECRET_KEY = 'django-insecure-i-&^*zfblm6pr60)flm*m4ed1b+b58r6o+buozbvar&5rimoay
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = not IS_PRODUCTION
+BASE_URL = 'https://10.1.76.75:6001/' if IS_PRODUCTION else 'http://localhost:8000/'
+
 
 ALLOWED_HOSTS = ['*']
 
@@ -98,6 +100,7 @@ INSTALLED_APPS = [
     'bootstrap5',
     'social_django',
     'corsheaders',
+    'rest_framework',
  
 ]
 
@@ -106,11 +109,11 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
 
 ROOT_URLCONF = 'iTicketer.urls'
@@ -248,3 +251,5 @@ CELERY_BEAT_SCHEDULE = {}
 WHATSAPP_INSTANCE_KEY = "b7432cbc-91a3-4530-9928-9470b13991f9"
 
 WHATSAPP_API_IP = "http://10.1.75.42:3333"
+
+MESSAGE_TEMPLATE = "RULES AND REGULATIONS: \n\n NO ENTRY without original Ticket and ID card and acknowledgement Message.\n\n· Everyone should assemble in the ground by 5 PM.\n\n· ZERO TOLERANCE for students found intoxicated or consuming prohibited substances as per Institution policy.\n\n· Everyone should maintain decorum, and if any contrary activities are found, appropriate action will be taken.\n\n· Buses are available only to Gandhipuram at 8.00 PM.\n\n· Once paid, tickets will not be refunded.\n\n· Jananam tickets are only for internal audiences. External audiences are not allowed."

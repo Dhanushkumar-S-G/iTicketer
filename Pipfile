@@ -15,6 +15,7 @@ msal = "*"
 celery = "*"
 django-celery-beat = "*"
 redis = "*"
+djangorestframework = "*"
 
 [dev-packages]
 

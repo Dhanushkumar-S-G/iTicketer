@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
 from django.contrib.auth import logout
 from django.contrib import messages
+from .models import *
 
 from base_app.tasks import send_whatsapp_msg
 from .models import Booking,Transaction
@@ -19,6 +20,10 @@ from django.core.exceptions import SuspiciousOperation
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from datetime import datetime
+from django.http import HttpResponse
+from rest_framework.decorators import api_view
+from django.http import JsonResponse
+
 # Create your views here.
 def index(request):
     context = {}
@@ -45,9 +50,16 @@ def index(request):
 def dashboard(request):
     context = {}
     try:
+        BASE_URL = settings.BASE_URL
+        print(BASE_URL)
         usr = request.user
+        context['base_url'] = BASE_URL
         try:
             context['booking'] = Booking.objects.get(user=usr)
+            context['request'] = request
+            
+            profile = Profile.objects.get(user=usr)
+            context['jnm_id'] = profile.jnm_id
         except Exception as e:
             last_date = datetime(2024, 1, 4).date()
             current_date = datetime.now().date()
@@ -63,6 +75,7 @@ def dashboard(request):
                     amount = 150
                 else:
                     amount = 250
+            
             context = {
                 'booking' : None,
                 'enabled' : is_payment_enabled,
@@ -146,7 +159,7 @@ def pay_show(request):
                 else:
                     amount = 250
                     usr = request.user
-        
+            # amount = 1
             isBooking = Booking.objects.filter(user=usr).exists()
             if isBooking:
                 messages.success(request, 'You have already booked a show')
@@ -231,7 +244,10 @@ def succ_pay(request):
             booking = Booking.objects.create(user=trns.user, transaction=trns)
             booking.save()
             messages.success(request, 'Payment Successfull!')
-            send_whatsapp_msg.delay(to=)
+            profile = Profile.objects.get(user=trns.user)
+            message = "Your Ticket has been Booked"
+            send_whatsapp_msg.delay(to=profile.phone,msg=settings.MESSAGE_TEMPLATE)
+            send_whatsapp_msg.delay(to=profile.phone,msg=f"Your Payment has been sucessfull - JANANAM \n\n Your JANANAM ID is {profile.jnm_id}")
             return redirect('/dashboard')
         else:
             print('Date tampered')
@@ -272,3 +288,40 @@ def cancel(request):
 def logout_user(request):
     logout(request)
     return redirect("/")
+
+@api_view(['GET'])
+def check_profile(request,id):
+    user = User.objects.get(id=id)
+    try:
+        prf = Profile.objects.get(user=user)
+        if prf:
+            return JsonResponse({'status':True,'message':'Profile is complete','data':True})
+        else:
+            return JsonResponse({'status':False,'message':'Profile is not complete','data':False})
+    except Exception as e:
+        return JsonResponse({'status':False,'message':'Profile is not complete','error':str(e)})
+    return JsonResponse({'status':False,'message':'Profile is not complete','error':str(e)})
+    
+@api_view(['POST'])
+def create_profile(request):
+    if request.method == 'POST':
+        print(request.POST)
+        try:
+            print('hii')
+            phone_number = request.POST.get('phone_number')
+            is_transport = request.POST.get('is_transport')
+            user = request.user
+            
+            user_id = user.id
+            
+            id = f'JNM{user_id:03d}'
+           
+            if is_transport == 'on':
+                is_transport = True
+            else:
+                is_transport = False
+            Profile.objects.create(user=user,phone=phone_number,is_transport_needed=is_transport,jnm_id=id)            
+            return redirect('dashboard')
+        except Exception as e:
+            print(str(e))
+            return redirect('dashboard')

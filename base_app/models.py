@@ -49,3 +49,10 @@ class MaintenanceDataStore(models.Model):
 
     STATUS_CHOICES = ((IS_ONLINE, "ONLINE"), (IS_UNDER_MAINTENANCE, "MAINTENANCE"))
     status = models.PositiveSmallIntegerField(default=IS_ONLINE, choices=STATUS_CHOICES)
+
+class Profile(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    phone = models.CharField(max_length=12)
+    is_transport_needed = models.BooleanField(default=False,null=True,blank=True)
+    paid = models.BooleanField(default=False,null=True,blank=True)
+    jnm_id = models.CharField(max_length=10,null=True)
