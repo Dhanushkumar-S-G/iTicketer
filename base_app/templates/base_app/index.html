@@ -15,7 +15,9 @@
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
     />
-  <script>navigator.serviceWorker.register("static/pwabuilder-adv-sw.js")</script> 
+    <script>
+      navigator.serviceWorker.register('static/pwabuilder-adv-sw.js');
+    </script>
     <title>JANANAM 2024</title>
   </head>
   <body>
@@ -26,40 +28,28 @@
       >
         <div class="container">
           <a class="navbar-brand" href="/">JANANAM 2024</a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarCollapse"
-            aria-controls="navbarCollapse"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav ml-auto">
-              {%if user.is_authenticated %}
-              <li class="nav-item active">
-                <a
-                  class="nav-link text-uppercase font-weight-100 letter-spacing-4px"
-                  href="{% url 'dashboard'%}"
-                  >Bookings
-                  <span class="sr-only">(current)</span>
-                </a>
-              </li>
-              {% else %}
-              <li class="nav-item active">
-                <a
-                  class="nav-link text-uppercase font-weight-100 letter-spacing-4px"
-                  href="{% url 'social:begin' 'azuread-oauth2' %}"
-                  >Login
-                  <span class="sr-only">(current)</span>
-                </a>
-              </li>
-              {% endif %}
-            </ul>
-          </div>
+
+          <ul class="navbar-nav ml-auto">
+            {%if user.is_authenticated %}
+            <li class="nav-item active">
+              <a
+                class="nav-link text-uppercase font-weight-100 letter-spacing-4px"
+                href="{% url 'dashboard'%}"
+                >Bookings
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            {% else %}
+            <li class="nav-item active">
+              <a
+                class="nav-link text-uppercase font-weight-100 letter-spacing-4px"
+                href="{% url 'social:begin' 'azuread-oauth2' %}"
+                >Login
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
         </div>
       </nav>
     </header>
@@ -81,17 +71,25 @@
           </div>
           <br />
           <br />
+          {% if user.is_authenticated %}
           <a
             class="pr-5 pl-5 pt-2 pb-2 text-white btn text-uppercase font-weight-bold btn-gradient"
             href="{%url 'dashboard'%}"
             >Book Now</a
           >
+          {% else %}
+          <a
+            class="pr-5 pl-5 pt-2 pb-2 text-white btn text-uppercase font-weight-bold btn-gradient"
+            href="{% url 'social:begin' 'azuread-oauth2' %}"
+            >Book Now</a
+          >
+          {% endif %}
         </div>
       </section>
     </main>
 
-    <footer class="d-flex align-items-center justify-content-center">
-      <p class="footer bg-white">Made with ❤️ at iQube 💙</p>
+    <footer class="fixed-bottom">
+      <p style="padding-left: 20px; color: white">Made with ❤️ at iQube 💙</p>
     </footer>
     <script src="{%static 'index.js' %}"></script>
   </body>

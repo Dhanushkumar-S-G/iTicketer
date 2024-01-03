@@ -274,3 +274,8 @@ sentry_sdk.init(
     # We recommend adjusting this value in production.
     profiles_sample_rate=1.0,
 )
+
+if IS_PRODUCTION:
+    SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
