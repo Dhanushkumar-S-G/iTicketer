@@ -63,18 +63,38 @@ def dashboard(request):
         except Exception as e:
             last_date = datetime(2024, 1, 4).date()
             current_date = datetime.now().date()
-            no_of_bookings = Booking.objects.all().count()
-            if current_date > last_date or no_of_bookings >= settings.MAX_BOOKINGS :
+            total_bookings = Booking.objects.all().count()
+            # seated_bookings = Profile.objects.filter(paid=True,bay = Profile.SEATED).count()
+            # first_bay_bookings = Profile.objects.filter(paid=True,bay = Profile.FIRST_BAY).count()
+            # second_bay_bookings = Profile.objects.filter(paid=True,bay = Profile.SECOND_BAY).count()
+
+            if total_bookings >= settings.MAX_BOOKINGS :
                 messages.warning(request,"Payment has been closed")
                 is_payment_enabled = False
                 print("payment enabled")
                 return redirect('/dashboard')
+            
+            # if seated_bookings >= settings.SEATED_MAX_BOOKINGS:
+            #     is_seated_available = False
+            # else:
+            #     is_seated_available = True 
+            
+            # if first_bay_bookings >= settings.FIRST_BAY_MAX_BOOKINGS:
+            #     is_first_bay_available = False
+            # else:
+            #     is_first_bay_available = True
+
+            # if second_bay_bookings >= settings.SECOND_BAY_MAX_BOOKINGS:
+            #     second_bay_bookings = False
+            # else: 
+            #     second_bay_bookings = True
+
+
+            is_payment_enabled = True
+            if current_date < last_date:
+                amount = 150
             else:
-                is_payment_enabled = True
-                if current_date < last_date:
-                    amount = 150
-                else:
-                    amount = 250
+                amount = 250
             
             context = {
                 'booking' : None,
@@ -243,6 +263,9 @@ def succ_pay(request):
             trns.save()
             booking = Booking.objects.create(user=trns.user, transaction=trns)
             booking.save()
+            profile = Profile.objects.get(user=trns.user)
+            profile.paid = True
+            profile.save()
             messages.success(request, 'Payment Successfull!')
             profile = Profile.objects.get(user=trns.user)
             message = "Your Ticket has been Booked"

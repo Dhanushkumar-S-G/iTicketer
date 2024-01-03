@@ -61,3 +61,17 @@ class CheckStatusLog(models.Model):
     transaction = models.ForeignKey('Transaction', null=True, blank=True, on_delete=models.SET_NULL)
     is_changed = models.BooleanField(default=False)
     changed_at = models.DateTimeField(null=True, blank=True)
+    ticket = models.ForeignKey('Tickets',on_delete=models.CASCADE,null=True,blank=True)
+
+
+class Tickets(models.Model):
+    # 200 Tickets - Seated - Rs.250
+    # 1000 tickets for first bay - Rs.200
+    # 1000 tickets for Second bay - Rs.150
+    # This is early bird, we will increase it by Rs.50 for all the categories from 5th 12AM
+    price = models.IntegerField(default=0,null=True,blank=True) 
+    bay = models.CharField(null=True, blank=True,max_length=40)
+    users = models.ManyToManyField(User,related_name='tickets',null=True,blank=True)
+    is_filled = models.BooleanField(default=False,null=True,blank=True)
+    max_count = models.IntegerField(default=0,null=True,blank=True)
+    is_early_bird = models.BooleanField(default=False,null=True,blank=True)
