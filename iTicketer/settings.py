@@ -30,7 +30,7 @@ BASE_URL = 'https://10.1.76.75:6001/' if IS_PRODUCTION else 'http://localhost:80
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ['https://jananam.iqubekct.ac.in', 'http://10.1.76.75']
+CSRF_TRUSTED_ORIGINS = ['https://jananam2.iqubekct.ac.in', 'http://10.1.76.75']
 
 import os
 from django.contrib.messages import constants as messages
