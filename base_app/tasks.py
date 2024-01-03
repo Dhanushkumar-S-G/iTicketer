@@ -3,12 +3,13 @@ from django.conf import settings
 import requests
 from celery import shared_task
 from base_app.models import CheckStatusLog, Transaction
+import time
 
 
 
 @shared_task()
 def send_whatsapp_msg(to,msg):
-
+    time.sleep(5)
     url = f"{settings.WHATSAPP_API_IP}/message/text?key={settings.WHATSAPP_INSTANCE_KEY}"
     to = f"+91{to}"
     print(type(to))
