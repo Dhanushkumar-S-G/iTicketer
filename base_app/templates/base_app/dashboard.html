@@ -7,6 +7,15 @@
     <title>Dashboard</title>
     
     {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
+<style>
+  @media (max-width: 767px) {
+    .modal-dialog {
+      margin: 0;
+      max-width: 100%;
+      width: 100%;
+    }
+  }
+</style>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
@@ -34,46 +43,6 @@
           
 
             {% if user.is_authenticated %}
- <input type="text" class="form-control" name="base_url" value = "{{base_url}}" id="base_url" hidden>
-<!--  -->
-<<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" hidden id="formButton">
-  Launch static backdrop modal
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Profile Update</h5>
-       
-      </div>
-      <div class="modal-body">
-        <form id="form" method="post" action="{% url 'create_profile' %}" >
-     {% csrf_token %}    
-          <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Contact Number</label>
-    <input type="number" class="form-control" name="phone_number" id="phone_number" aria-describedby="emailHelp">
-
-  </div>
-  
-  <div class="mb-3 form-check">
-    <input type="checkbox" name="is_transport" class="form-check-input" id="is_transport">
-    <label class="form-check-label" for="exampleCheck1">Is Transport Needed</label>
-  </div>
-      </div>
-      <div class="modal-footer">
-      
-        <button onClick="" type="submit" class="btn btn-primary">Submit</button>
-      </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-            <input value="{{user.id}}" id="user_id" hidden/>
-          
               <a class="btn text-white" href="{% url 'logout' %}">Sign Out</a>
             {% else %}
               <a class="btn" href="signin">Sign In</a>
@@ -124,8 +93,46 @@
       {% endif %}
 
 
-      
+        
     </div>
+    {%if user.is_authenticated%}
+     <input type="text" class="form-control" name="base_url" value="{{base_url}}" id="base_url" hidden>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" hidden id="formButton">
+  Launch static backdrop modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Profile Update</h5>
+       
+      </div>
+      <div class="modal-body">
+        <form id="form" method="post" action="{% url 'create_profile' %}" >
+     {% csrf_token %}    
+          <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Contact Number</label>
+    <input type="number" class="form-control" name="phone_number" id="phone_number" aria-describedby="emailHelp">
+            <input value="{{user.id}}" id="user_id" hidden/>
+
+  </div>
+  
+  <div class="mb-3 form-check">
+    <input type="checkbox" name="is_transport" class="form-check-input" id="is_transport">
+    <label class="form-check-label" for="exampleCheck1">Is Transport Needed</label>
+  </div>
+      </div>
+      <div class="modal-footer">
+      
+        <button onClick="" type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+    {%endif%}
   </body>
   <script>
     async function fetchData() {
