@@ -5,3 +5,4 @@ from .models import *
 admin.site.register(Booking)
 admin.site.register(Transaction)
 admin.site.register(Profile)
+admin.site.register(CheckStatusLog)
