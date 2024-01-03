@@ -131,11 +131,11 @@
           <h5 class="modal-title" id="staticBackdropLabel">Profile Update</h5>
         </div>
         <div class="modal-body">
-          <form id="form" method="post" action="{% url 'create_profile' %}">
+          <form id="form" method="post" action="{% url 'create_profile' %}" >
             {% csrf_token %}
             <div class="mb-3">
-              <label for="exampleInputEmail1" class="form-label">Contact Number</label>
-              <input type="number" class="form-control" name="phone_number" id="phone_number" aria-describedby="emailHelp">
+              <label for="phone_number" class="form-label">Contact Number</label>
+              <input type="number" class="form-control" name="phone_number" id="phone_number" aria-describedby="mobilenumber" pattern="\d{10}" required  title="Please enter exactly 10 digits" >
               <input value="{{user.id}}" id="user_id" hidden/>
             </div>
             <div class="mb-3 form-check">
@@ -144,7 +144,7 @@
             </div>
         </div>
         <div class="modal-footer">
-          <button onClick="" type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
         </form>
         </div>
       </div>
