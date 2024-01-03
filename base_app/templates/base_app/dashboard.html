@@ -55,7 +55,9 @@
     <div class="container ">
       {% if not booking%}
       <h1 class="py-4">Tickets On Sale Now!</h1>
-
+      <div class="container mb-3">
+       <strong>Jananam, synonymous with energy, is set to captivate hearts once more through the vibrant performances of Kumaraguru Institutions' talented artists.</strong> This event showcases a diverse array of performing arts on stage, featuring the institution's skilled talents in dance, music, yoga, and comedy . The dynamic fusion of these art forms promises a mesmerizing experience for the audience, highlighting the rich cultural tapestry nurtured within Kumaraguru. From the rhythmic beats of dance to the soul-stirring melodies of music, the event promises a celebration of creativity and skill. As the artists take the stage, Jananam becomes a platform for the institution's performers to showcase their prowess, creating an unforgettable and immersive experience for all in attendance. Get ready to be enthralled by the boundless energy and talent that Jananam brings to life.
+      </div>
       <h2 class="py3 text-center">Rules and Regualtions</h2>
       <div class="container py-4">
         <ul class="list-group">
@@ -66,25 +68,32 @@
           <li class="list-group-item">Buses are available only to Gandhipuram at 8.00 PM.</li>
           <li class="list-group-item">Once tickets are paid, they will not be refunded.</li>
           <li class="list-group-item">Jananam tickets are only for the internal audience. External audience not allowed.</li>
+          <li class="list-group-item">No water bottles and bags inside the venue.</li>
         </ul>
       </div>
-      <div class="row">
-          <center>
-          <form method="POST">
-            <div class="col-6">
-              <div class="input-group">
-                <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
-                  <option selected>Choose your seating ...</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
-                <button class="btn btn-primary" type="button">Book Now</button>
-              </div>
-            </div>
-          </form>
-        </center>
+      
+      
+        <div class="row justify-content-center align-items-center">
+            <form method="POST">
+                <div class="col-12 col-md-6">
+                    <div class="row">
+                        <div class="input-group">
+                            <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+                                <option value="" disabled selected class="d-block d-sm-none">Choose your seating ...</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                            <button class="btn btn-primary" type="submit">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
+    
+    
+    </div>
+    
         {% comment %} <a href="{% url 'book_show' %}" class="btn btn-primary">Book a Seat</a> {% endcomment %}
       {% else %}
       <h1 class="py-4">Ticket Details</h1>
