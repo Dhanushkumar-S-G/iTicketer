@@ -255,3 +255,18 @@ WHATSAPP_API_IP = "http://10.1.75.42:3333"
 MESSAGE_TEMPLATE = "RULES AND REGULATIONS: \n\n NO ENTRY without original Ticket and ID card and acknowledgement Message.\n\n· Everyone should assemble in the ground by 5 PM.\n\n· ZERO TOLERANCE for students found intoxicated or consuming prohibited substances as per Institution policy.\n\n· Everyone should maintain decorum, and if any contrary activities are found, appropriate action will be taken.\n\n· Buses are available only to Gandhipuram at 8.00 PM.\n\n· Once paid, tickets will not be refunded.\n\n· Jananam tickets are only for internal audiences. External audiences are not allowed."
 
 MAX_BOOKINGS = 800
+
+
+# settings.py
+import sentry_sdk
+
+sentry_sdk.init(
+    dsn="https://ef74c89d0d39b463b8731eccb79f9176@o389539.ingest.sentry.io/4506503794065408",
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    traces_sample_rate=1.0,
+    # Set profiles_sample_rate to 1.0 to profile 100%
+    # of sampled transactions.
+    # We recommend adjusting this value in production.
+    profiles_sample_rate=1.0,
+)
