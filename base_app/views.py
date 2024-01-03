@@ -221,7 +221,6 @@ def pay_show(request):
 
 @csrf_exempt
 def failure(request):
-    print('.................................payment failed......................................................')
     if request.method == "POST":
         data = key_collect(request)
         if verify_hash(data):
@@ -343,6 +342,7 @@ def create_profile(request):
             print('hii')
             phone_number = request.POST.get('phone_number')
             is_transport = request.POST.get('is_transport')
+            gender = request.POST.get('gender')
             user = request.user
             
             user_id = user.id
@@ -353,8 +353,15 @@ def create_profile(request):
                 is_transport = True
             else:
                 is_transport = False
-            Profile.objects.create(user=user,phone=phone_number,is_transport_needed=is_transport,jnm_id=id)            
+            Profile.objects.create(user=user,phone=phone_number,is_transport_needed=is_transport,jnm_id=id,gender=gender)            
+            messages.success(request,'Profile Created Successfully')
             return redirect('dashboard')
         except Exception as e:
             print(str(e))
+            messages.error(request,'Profile Creation Failed')
             return redirect('dashboard')
+        
+def admin_dashboard(request):
+    context = {}
+    context['bookings'] = Booking.objects.all()
+    return render(request,'base_app/admin_dashboard.html',context)

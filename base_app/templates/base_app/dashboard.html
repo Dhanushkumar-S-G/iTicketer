@@ -143,8 +143,13 @@
           <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Contact Number</label>
     <input type="number" class="form-control" name="phone_number" id="phone_number" aria-describedby="emailHelp">
-            <input value="{{user.id}}" id="user_id" hidden/>
-
+    <input value="{{user.id}}" id="user_id" hidden/>
+    <br>
+    <select name="gender" class="form-select" aria-label="Default select example">
+      <option disabled value="--Select--">--Select--</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+    </select>
   </div>
   
   <div class="mb-3 form-check">

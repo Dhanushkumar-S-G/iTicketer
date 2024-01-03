@@ -56,6 +56,12 @@ class Profile(models.Model):
     is_transport_needed = models.BooleanField(default=False,null=True,blank=True)
     paid = models.BooleanField(default=False,null=True,blank=True)
     jnm_id = models.CharField(max_length=10,null=True)
+    MALE = "Male"
+    FEMALE = "Female"
+    GENDER_CHOICES = ((MALE, "Male"), (FEMALE, "Female"))
+    gender = models.CharField(
+        choices=GENDER_CHOICES, null=True, blank=True, max_length=10
+    ) 
 
 class CheckStatusLog(models.Model):
     transaction = models.ForeignKey('Transaction', null=True, blank=True, on_delete=models.SET_NULL)
