@@ -68,9 +68,24 @@
           <li class="list-group-item">Jananam tickets are only for the internal audience. External audience not allowed.</li>
         </ul>
       </div>
-      <center>
-        <a href="{% url 'book_show' %}" class="btn btn-primary">Book a Seat</a>
-      </center>
+      <div class="row">
+          <center>
+          <form method="POST">
+            <div class="col-6">
+              <div class="input-group">
+                <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+                  <option selected>Choose your seating ...</option>
+                  <option value="1">One</option>
+                  <option value="2">Two</option>
+                  <option value="3">Three</option>
+                </select>
+                <button class="btn btn-primary" type="button">Book Now</button>
+              </div>
+            </div>
+          </form>
+        </center>
+        </div>
+        {% comment %} <a href="{% url 'book_show' %}" class="btn btn-primary">Book a Seat</a> {% endcomment %}
       {% else %}
       <h1 class="py-4">Ticket Details</h1>
       <center>
