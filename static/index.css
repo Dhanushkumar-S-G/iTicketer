@@ -29,12 +29,13 @@ body {
 #showcase-background-1 {
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
     url('/static/bg2.png');
-  height: calc(100vh - 25px);
+  height: 100vh;
 }
 
 #showcase-background-2 {
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
     url('/static/bg2.png');
+  height: 100vh;
 }
 .btn-gradient {
   background: linear-gradient(217deg, #f8174b, #7f1fa3 70.71%);
@@ -65,12 +66,4 @@ a.text-red:hover {
 .btn-outline-red {
   border: 1px solid #f8174b;
   background: transparent;
-}
-.footer {
-  height: 25px;
-  position: absolute;
-  text-align: center;
-  bottom: 0;
-  left: 0;
-  width: 100%;
 }
