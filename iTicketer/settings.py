@@ -260,22 +260,20 @@ MESSAGE_TEMPLATE = "RULES AND REGULATIONS: \n\n NO ENTRY without original Ticket
 
 MAX_BOOKINGS = 800
 
-
-# settings.py
-import sentry_sdk
-
-sentry_sdk.init(
-    dsn="https://ef74c89d0d39b463b8731eccb79f9176@o389539.ingest.sentry.io/4506503794065408",
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
-    traces_sample_rate=1.0,
-    # Set profiles_sample_rate to 1.0 to profile 100%
-    # of sampled transactions.
-    # We recommend adjusting this value in production.
-    profiles_sample_rate=1.0,
-)
-
 if IS_PRODUCTION:
+    import sentry_sdk
+    sentry_sdk.init(
+        dsn="https://ef74c89d0d39b463b8731eccb79f9176@o389539.ingest.sentry.io/4506503794065408",
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        traces_sample_rate=1.0,
+        # Set profiles_sample_rate to 1.0 to profile 100%
+        # of sampled transactions.
+        # We recommend adjusting this value in production.
+        profiles_sample_rate=1.0,
+    )
+
     SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# settings.py
