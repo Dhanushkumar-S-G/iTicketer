@@ -9,7 +9,7 @@ from django.contrib.auth import logout
 from django.contrib import messages
 from .models import *
 
-from base_app.tasks import send_whatsapp_msg
+from base_app.tasks import payment_check_txnid, send_whatsapp_msg
 from .models import Booking,Transaction
 from django.conf import settings
 from hashlib import sha512
@@ -232,7 +232,7 @@ def failure(request):
             trns.save()
             messages.error(request, 'Payment Failed.Please try again later')
             
-            # payment_check_txnid.delay(data['txnid'])
+            payment_check_txnid.delay(data['txnid'])
 
             return redirect('/dashboard')
         else:
@@ -299,7 +299,7 @@ def cancel(request):
             trns.field9 = request.POST.get('field9')
             trns.update()
             trns.save()
-            # payment_check_txnid.delay(data['txnid'])
+            payment_check_txnid.delay(data['txnid'])
             messages.error(request, 'Payment Cancelled Successfully!')
             return redirect('/dashboard')
         else:

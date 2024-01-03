@@ -56,6 +56,11 @@ class Profile(models.Model):
     is_transport_needed = models.BooleanField(default=False,null=True,blank=True)
     paid = models.BooleanField(default=False,null=True,blank=True)
     jnm_id = models.CharField(max_length=10,null=True)
+
+class CheckStatusLog(models.Model):
+    transaction = models.ForeignKey('Transaction', null=True, blank=True, on_delete=models.SET_NULL)
+    is_changed = models.BooleanField(default=False)
+    changed_at = models.DateTimeField(null=True, blank=True)
     ticket = models.ForeignKey('Tickets',on_delete=models.CASCADE,null=True,blank=True)
 
 
