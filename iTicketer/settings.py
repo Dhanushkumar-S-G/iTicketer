@@ -207,6 +207,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.open_id.OpenIdAuth',
     "social_core.backends.azuread.AzureADOAuth2",
+    'social_core.backends.azuread_tenant.AzureADTenantOAuth2',
     "django.contrib.auth.backends.ModelBackend",
 )
 
@@ -217,9 +218,12 @@ LOGIN_URL = "/"
 LOGIN_REDIRECT_URL = "/dashboard"
 LOGOUT_REDIRECT_URL = "/"
 
-SOCIAL_AUTH_AZUREAD_OAUTH2_KEY = "bf89b302-3eb7-42f1-adfd-d4fdbffa1bdd"
+SOCIAL_AUTH_AZUREAD_OAUTH2_KEY = '08a2c4f6-1de5-4546-828b-6e2ff08dd3b2'
+SOCIAL_AUTH_AZUREAD_OAUTH2_SECRET = 'Dhd8Q~2sDliiGeMPzWFOVuC0TEShEGDblYYX-bMl'
+SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_TENANT_ID = '6b8b8296-bdff-4ad8-93ad-84bcbf3842f5'
 # SOCIAL_AUTH_AZUREAD_OAUTH2_KEY = "bf89b302-3eb7-42f1-adfd-d4fdbffa1bdd"
-SOCIAL_AUTH_AZUREAD_OAUTH2_SECRET = "YKl8Q~p8GE-7CQhregcTEPjRbFHn0~Sqdr6jqaK4"
+# # SOCIAL_AUTH_AZUREAD_OAUTH2_KEY = "bf89b302-3eb7-42f1-adfd-d4fdbffa1bdd"
+# SOCIAL_AUTH_AZUREAD_OAUTH2_SECRET = "YKl8Q~p8GE-7CQhregcTEPjRbFHn0~Sqdr6jqaK4"
 
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
