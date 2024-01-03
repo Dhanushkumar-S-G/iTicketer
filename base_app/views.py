@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
 from django.contrib.auth import logout
 from django.contrib import messages
+from sentry_sdk import capture_exception
 from .models import *
 
 from base_app.tasks import payment_check_txnid, send_whatsapp_msg
@@ -217,6 +218,7 @@ def pay_show(request):
                     raise SuspiciousOperation("Invalid request")
     except Exception as e:
         print(e)
+        capture_exception(e)
         return redirect('/dashboard')
 
 @csrf_exempt
@@ -358,6 +360,7 @@ def create_profile(request):
             return redirect('dashboard')
         except Exception as e:
             print(str(e))
+            capture_exception(e)
             messages.error(request,'Profile Creation Failed')
             return redirect('dashboard')
         
