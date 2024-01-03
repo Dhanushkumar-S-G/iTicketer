@@ -1,3 +1,4 @@
+{% load myfilters %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -71,24 +72,27 @@
           <li class="list-group-item">No water bottles and bags inside the venue.</li>
         </ul>
       </div>
-      
-      
-        <div class="row justify-content-center align-items-center">
-            <form method="POST">
-                <div class="col-12 col-md-6">
-                    <div class="row">
-                        <div class="input-group">
-                            <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
-                                <option value="" disabled selected class="d-block d-sm-none">Choose your seating ...</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </select>
-                            <button class="btn btn-primary" type="submit">Book Now</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
+      <div class="row">
+          <center>
+        
+            <div class="col-6">
+              <div class="input-group">
+                <form method="post" action="{% url 'book_show' %}">
+                  {% csrf_token %}
+                <select class="form-select" name="ticket" id="inputGroupSelect04" aria-label="Example select with button addon">
+                  <option selected>Choose your seating ...</option>
+                  {% if tickets %}
+                  {% for ticket in tickets %}
+                  <option value="{{ticket.id}}">{{ticket|get_price}}</option>
+                  {% endfor %}
+                 {% endif %}
+                </select>
+                <button class="btn btn-primary" type="submit">Book Now</button>
+              </form>
+              </div>
+            </div>
+         
+        </center>
         </div>
     
     
