@@ -30,6 +30,7 @@ class Transaction(models.Model):
     refund_amount = models.IntegerField(default=0, null=True)
     additional_charges = models.FloatField(default=0, null=True)  # not yet used
     field9 = models.TextField(max_length=512, null=True)
+    ticket = models.ForeignKey('Tickets',on_delete=models.CASCADE,null=True,blank=True)
 
     def update(self):
         self.updated_at = timezone.now()
@@ -43,6 +44,7 @@ class Booking(models.Model):
     transaction = models.ForeignKey(Transaction,on_delete=models.CASCADE,null=True)
     def __str__(self):
         return self.user.first_name
+    
 class MaintenanceDataStore(models.Model):
     IS_ONLINE = 0
     IS_UNDER_MAINTENANCE = 1

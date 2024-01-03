@@ -178,11 +178,6 @@ def pay_show(request):
                 return redirect('/dashboard')
             else:
                 is_payment_enabled = True
-                if current_date < last_date:
-                    amount = 150
-                else:
-                    amount = 250
-                    usr = request.user
             # amount = 1
             isBooking = Booking.objects.filter(user=usr).exists()
             if isBooking:
@@ -195,7 +190,13 @@ def pay_show(request):
                     if 'ticket' in request.POST:
                         ticket_id = request.POST.get('ticket')
                         ticket = Tickets.objects.get(id=ticket_id)
-                        amount = ticket.price    
+                        last_date = datetime(2024, 1, 2).date()
+                        current_date = datetime.now().date()
+                        if current_date > last_date:
+                            amount = ticket.price + 1
+                        else:
+                            amount = ticket.price
+                                
                     usr = request.user    
                     firstname = usr.username
                     title = "JANANAM 2023"
@@ -209,9 +210,17 @@ def pay_show(request):
                     data = dict(key=mkey, txnid=txnid, amount=amount, productinfo=title, firstname=firstname, email=email)
                     hash = generate_hash(data)
                     data.update({'hash': hash, 'surl': surl, 'curl': curl, 'furl': furl})
-                    Transaction.objects.create(txnid=txnid, status=Transaction.INITIATED, user=usr,
-                                            amount=amount,
-                                            name=title)
+                    # bay = ticket.bay
+                    # bay_obj = Tickets.objects.get(bay=bay)
+                    # count = bay_obj.users.all().count()
+                    # print(count)
+                    # if count >= ticket.max_count:
+                    #     print('im filled')
+                    #     ticket.is_filled = True
+                    #     ticket.users.add(usr)
+                    #     ticket.save()                   
+                    # ticket.save()
+                    Transaction.objects.create(txnid=txnid, status=Transaction.INITIATED, user=usr,amount=amount,name=title,ticket=ticket)
                     return render(request, 'base_app/pay_redirect.html', {'form': data,'amount':amount,'enabled':is_payment_enabled})
                 else:
                     raise SuspiciousOperation("Invalid request")
@@ -270,6 +279,17 @@ def succ_pay(request):
             trns.update()
             trns.additional_charges = data.get("additionalCharges", 0)
             trns.field9 = request.POST.get('field9')
+            trns.ticket.users.add(trns.user)
+            bay = trns.ticket.bay
+            bay_obj = Tickets.objects.get(bay=bay)
+            count = bay_obj.users.all().count()
+            print(count)
+            ticket = trns.ticket
+            if count >= ticket.max_count:
+                print('im filled')
+                ticket.is_filled = True
+                                   
+            ticket.save()
             trns.save()
             booking = Booking.objects.create(user=trns.user, transaction=trns)
             booking.save()
