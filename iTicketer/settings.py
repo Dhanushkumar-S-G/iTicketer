@@ -253,3 +253,5 @@ WHATSAPP_INSTANCE_KEY = "123"
 WHATSAPP_API_IP = "http://10.1.75.42:3333"
 
 MESSAGE_TEMPLATE = "RULES AND REGULATIONS: \n\n NO ENTRY without original Ticket and ID card and acknowledgement Message.\n\n· Everyone should assemble in the ground by 5 PM.\n\n· ZERO TOLERANCE for students found intoxicated or consuming prohibited substances as per Institution policy.\n\n· Everyone should maintain decorum, and if any contrary activities are found, appropriate action will be taken.\n\n· Buses are available only to Gandhipuram at 8.00 PM.\n\n· Once paid, tickets will not be refunded.\n\n· Jananam tickets are only for internal audiences. External audiences are not allowed."
+
+MAX_BOOKINGS = 800

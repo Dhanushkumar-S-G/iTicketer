@@ -30,7 +30,7 @@ def index(request):
     last_date = datetime(2024, 1, 4).date()
     current_date = datetime.now().date()
     no_of_bookings = Booking.objects.all().count()
-    if current_date > last_date or no_of_bookings >= 900 :
+    if current_date > last_date or no_of_bookings >= settings.MAX_BOOKINGS :
         messages.warning(request,"Payment has been closed")
         is_payment_enabled = False
         print("payment enabled")
@@ -64,7 +64,7 @@ def dashboard(request):
             last_date = datetime(2024, 1, 4).date()
             current_date = datetime.now().date()
             no_of_bookings = Booking.objects.all().count()
-            if current_date > last_date or no_of_bookings >= 900 :
+            if current_date > last_date or no_of_bookings >= settings.MAX_BOOKINGS :
                 messages.warning(request,"Payment has been closed")
                 is_payment_enabled = False
                 print("payment enabled")
@@ -147,7 +147,7 @@ def pay_show(request):
             current_date = datetime.now().date()
             no_of_bookings = Booking.objects.all().count()
             usr = request.user
-            if current_date > last_date or no_of_bookings >= 900 :
+            if current_date > last_date or no_of_bookings >= settings.MAX_BOOKINGS :
                 messages.warning(request,"Payment has been closed")
                 is_payment_enabled = False
                 print("payment enabled")
