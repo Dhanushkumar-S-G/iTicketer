@@ -71,11 +71,19 @@
           </div>
           <br />
           <br />
+          {% if user.is_authenticated %}
           <a
             class="pr-5 pl-5 pt-2 pb-2 text-white btn text-uppercase font-weight-bold btn-gradient"
             href="{%url 'dashboard'%}"
             >Book Now</a
           >
+          {% else %}
+          <a
+            class="pr-5 pl-5 pt-2 pb-2 text-white btn text-uppercase font-weight-bold btn-gradient"
+            href="{% url 'social:begin' 'azuread-oauth2' %}"
+            >Book Now</a
+          >
+          {% endif %}
         </div>
       </section>
     </main>
