@@ -1,235 +1,187 @@
 {% load myfilters %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>Dashboard</title>
-    
-    {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
-<style>
-  @media (max-width: 767px) {
-    .modal-dialog {
-      margin: 0;
-      max-width: 100%;
-      width: 100%;
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <title>Dashboard</title>
+  
+  {% load bootstrap5 %} {% bootstrap_css %} {% bootstrap_javascript %}
+  <style>
+    @media (max-width: 767px) {
+      .modal-dialog {
+        margin: 0;
+        max-width: 100%;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand text-white" href="/">Jananam 2024</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarTogglerDemo02"
+        aria-controls="navbarTogglerDemo02"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          {% comment %} <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#"
+              >Dashboard</a
+            >
+          </li> {% endcomment %}
+        </ul>
+        
+
+        {% if user.is_authenticated %}
+          <a class="btn text-white" href="{% url 'logout' %}">Sign Out</a>
+        {% else %}
+          <a class="btn" href="signin">Sign In</a>
+        {%endif%}
+      </div>
+    </div>
+  </nav>
+  {% include 'messages.html' %}
+  {% if not booking%}
+  <div class="container">
+    <h1 class="py-4">Tickets On Sale Now!</h1>
+    <div class="container mb-3">
+      <strong>Jananam, synonymous with energy, is set to captivate hearts once more through the vibrant performances of Kumaraguru Institutions' talented artists.</strong> This event showcases a diverse array of performing arts on stage, featuring the institution's skilled talents in dance, music, yoga, and comedy. The dynamic fusion of these art forms promises a mesmerizing experience for the audience, highlighting the rich cultural tapestry nurtured within Kumaraguru. From the rhythmic beats of dance to the soul-stirring melodies of music, the event promises a celebration of creativity and skill. As the artists take the stage, Jananam becomes a platform for the institution's performers to showcase their prowess, creating an unforgettable and immersive experience for all in attendance. Get ready to be enthralled by the boundless energy and talent that Jananam brings to life.
+    </div>
+    <h2 class="py3 text-center">Rules and Regulations</h2>
+    <div class="container py-4">
+      <ul class="list-group">
+        <li class="list-group-item"><b>NO ENTRY</b> without the original Ticket, ID card, and acknowledgment Message.</li>
+        <li class="list-group-item">Everyone should assemble in the ground by 5 PM.</li>
+        <li class="list-group-item"><b>ZERO TOLERANCE</b> for students found intoxicated or consuming prohibited substances, as per the Institution policy.</li>
+        <li class="list-group-item">Everyone should maintain decorum, and if any contrary activities are found, appropriate action will be taken.</li>
+        <li class="list-group-item">Buses are available only to Gandhipuram at 8.00 PM.</li>
+        <li class="list-group-item">Once tickets are paid, they will not be refunded.</li>
+        <li class="list-group-item">Jananam tickets are only for the internal audience. External audience not allowed.</li>
+        <li class="list-group-item">No water bottles and bags inside the venue.</li>
+      </ul>
+    </div>
+    <div class="row">
+      <center>
+        <div class="col-6">
+          <form method="post" action="{% url 'book_show' %}">
+            {% csrf_token %}
+            <div class="input-group">
+              <select class="form-select" name="ticket" id="inputGroupSelect04" aria-label="Example select with button addon">
+                <option selected>Choose your seating ...</option>
+                {% if tickets %}
+                  {% for ticket in tickets %}
+                    <option value="{{ticket.id}}">{{ticket|get_price}}</option>
+                  {% endfor %}
+                {% endif %}
+              </select>
+              <button class="btn btn-primary" type="submit">Book Now</button>
+            </div>
+            </form>
+        </div>
+        <br/>
+        <img src="/static/seatting.png" alt="hi" height="500px"/>
+        <br/>
+      </center>
+    </div>
+
+  </div>
+  {% comment %} <a href="{% url 'book_show' %}" class="btn btn-primary">Book a Seat</a> {% endcomment %}
+  {% else %}
+  <h1 class="py-4">Ticket Details</h1>
+  <center>
+    <div class="card" style="width: 18rem">
+      <img src="https://www.kindpng.com/picc/m/307-3077517_icono-8-hd-png-download.png" class="card-img-top" alt="..." />
+      <div class="card-body">
+        <h5 class="card-title">JANANAM Ticket</h5>
+        <p class="card-text">
+          {% if jnm_id %}
+            Your Ticket has been booked <br>
+            JANANAM ID - {{jnm_id}}
+          {% endif %}
+        </p>
+      </div>
+    </div>
+  <center>
+    <!--  -->
+    <!--  -->
+  </div>
+  {% endif %}
+{% if user.is_authenticated %}
+  <input type="text" class="form-control" name="base_url" value="{{base_url}}" id="base_url" hidden>
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" hidden id="formButton">
+    Launch static backdrop modal
+  </button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Profile Update</h5>
+        </div>
+        <div class="modal-body">
+          <form id="form" method="post" action="{% url 'create_profile' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Contact Number</label>
+              <input type="number" class="form-control" name="phone_number" id="phone_number" aria-describedby="emailHelp">
+              <input value="{{user.id}}" id="user_id" hidden/>
+            </div>
+            <div class="mb-3 form-check">
+              <input type="checkbox" name="is_transport" class="form-check-input" id="is_transport">
+              <label class="form-check-label" for="exampleCheck1">Is Transport Needed</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button onClick="" type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+</body>
+<script>
+  async function fetchData() {
+    // Replace 'your_base_url' with the actual base URL of your Django application
+    const userId = document.getElementById('user_id').value;
+    const baseUrl = document.getElementById('base_url').value;
+    console.log(baseUrl);
+
+    try {
+      const response = await fetch(`${baseUrl}/check_profile/${userId}`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (data.status == false){
+        console.log("false");
+        document.getElementById('formButton').click();
+      }
+      // Process the retrieved data here
+      console.log('Data from server:', data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
   }
-</style>
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
-      <div class="container-fluid">
-        <a class="navbar-brand text-white" href="/">Jananam 2024</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarTogglerDemo02"
-          aria-controls="navbarTogglerDemo02"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            {% comment %} <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#"
-                >Dashboard</a
-              >
-            </li> {% endcomment %}
-          </ul>
-          
 
-            {% if user.is_authenticated %}
-              <a class="btn text-white" href="{% url 'logout' %}">Sign Out</a>
-            {% else %}
-              <a class="btn" href="signin">Sign In</a>
-            {%endif%}
-          </div>
-        </div>
-      </div>
-    </nav>
-    {% include 'messages.html' %}
-    <div class="container ">
-      {% if not booking%}
-      <h1 class="py-4">Tickets On Sale Now!</h1>
-      <div class="container mb-3">
-       <strong>Jananam, synonymous with energy, is set to captivate hearts once more through the vibrant performances of Kumaraguru Institutions' talented artists.</strong> This event showcases a diverse array of performing arts on stage, featuring the institution's skilled talents in dance, music, yoga, and comedy . The dynamic fusion of these art forms promises a mesmerizing experience for the audience, highlighting the rich cultural tapestry nurtured within Kumaraguru. From the rhythmic beats of dance to the soul-stirring melodies of music, the event promises a celebration of creativity and skill. As the artists take the stage, Jananam becomes a platform for the institution's performers to showcase their prowess, creating an unforgettable and immersive experience for all in attendance. Get ready to be enthralled by the boundless energy and talent that Jananam brings to life.
-      </div>
-      <h2 class="py3 text-center">Rules and Regualtions</h2>
-      <div class="container py-4">
-        <ul class="list-group">
-          <li class="list-group-item"><b>NO ENTRY</b> without the original Ticket, ID card, and acknowledgment Message.</li>
-          <li class="list-group-item">Everyone should assemble in the ground by 5 PM.</li>
-          <li class="list-group-item"><b>ZERO TOLERANCE</b> for students found intoxicated or consuming prohibited substances, as per the Institution policy.</li>
-          <li class="list-group-item">Everyone should maintain decorum, and if any contrary activities are found, appropriate action will be taken.</li>
-          <li class="list-group-item">Buses are available only to Gandhipuram at 8.00 PM.</li>
-          <li class="list-group-item">Once tickets are paid, they will not be refunded.</li>
-          <li class="list-group-item">Jananam tickets are only for the internal audience. External audience not allowed.</li>
-          <li class="list-group-item">No water bottles and bags inside the venue.</li>
-        </ul>
-      </div>
-      <div class="row">
-          <center>
-        
-            <div class="col-6">
-              <div class="input-group">
-                <form method="post" action="{% url 'book_show' %}">
-                  {% csrf_token %}
-                <select class="form-select" name="ticket" id="inputGroupSelect04" aria-label="Example select with button addon">
-                  <option selected>Choose your seating ...</option>
-                  {% if tickets %}
-                  {% for ticket in tickets %}
-                  <option value="{{ticket.id}}">{{ticket|get_price}}</option>
-                  {% endfor %}
-                 {% endif %}
-                </select>
-                <button class="btn btn-primary" type="submit">Book Now</button>
-              </form>
-              </div>
-            </div>
-         
-        </center>
-        </div>
-    
-    
-    </div>
-    
-        {% comment %} <a href="{% url 'book_show' %}" class="btn btn-primary">Book a Seat</a> {% endcomment %}
-      {% else %}
-      <h1 class="py-4">Ticket Details</h1>
-      <center>
-      <div class="card" style="width: 18rem">
-        <img src="https://www.kindpng.com/picc/m/307-3077517_icono-8-hd-png-download.png" class="card-img-top" alt="..." />
-        <div class="card-body">
-          <h5 class="card-title">JANANAM Ticket</h5>
-          <p class="card-text">
-            {% if jnm_id %}
-           Your Ticket has been booked <br>
-           JANANAM ID - {{jnm_id}}
-            {% endif %}
-          </p>
-        </div>
-      </div>
-      <center>
-        <!--  -->
-        
-            <!--  -->
-      {% endif %}
-
-
-        
-    </div>
-    {%if user.is_authenticated%}
-     <input type="text" class="form-control" name="base_url" value="{{base_url}}" id="base_url" hidden>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" hidden id="formButton">
-  Launch static backdrop modal
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Profile Update</h5>
-       
-      </div>
-      <div class="modal-body">
-        <form id="form" method="post" action="{% url 'create_profile' %}" >
-     {% csrf_token %}    
-          <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Contact Number</label>
-    <input type="number" class="form-control" name="phone_number" id="phone_number" aria-describedby="emailHelp">
-            <input value="{{user.id}}" id="user_id" hidden/>
-
-  </div>
-  
-  <div class="mb-3 form-check">
-    <input type="checkbox" name="is_transport" class="form-check-input" id="is_transport">
-    <label class="form-check-label" for="exampleCheck1">Is Transport Needed</label>
-  </div>
-      </div>
-      <div class="modal-footer">
-      
-        <button onClick="" type="submit" class="btn btn-primary">Submit</button>
-      </form>
-      </div>
-    </div>
-  </div>
-</div>
-    {%endif%}
-  </body>
-  <script>
-    async function fetchData() {
-        // Replace 'your_base_url' with the actual base URL of your Django application
-        const userId = document.getElementById('user_id').value;
-        const baseUrl = document.getElementById('base_url').value;
-        console.log(baseUrl);
-        
-
-
-        try {
-            const response = await fetch(`${baseUrl}/check_profile/${userId}`);
-            
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            if (data.status == false){
-              console.log("false");
-              document.getElementById('formButton').click();
-            }
-            // Process the retrieved data here
-            console.log('Data from server:', data);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    }
-
-
-    // Call the fetchData function
-    fetchData();
-
-//     const createProfile = async () => {
-//     try {
-//         const form = document.getElementById('form');
-//         const user_form_id = document.getElementById('user_form_id').value;
-        
-//         const url = `http://localhost:8000/dashboard/`;
-
-//         const phone_number = document.getElementById('phone_number').value;
-//         const is_transport = document.getElementById('is_transport').value;
-//       const token = document.getElementById('token').value;
-//         const formData = new FormData(form);
-//         formData.append('user_id', user_form_id);
-       
-//       console.log(formData);
-//         const response = await fetch(url, {
-//             method: 'POST',
-//             body: formData,
-//             headers: {
-//                 'X-CSRFToken': token,
-//             },
-//         });
-
-//         if (!response.ok) {
-//             throw new Error(`HTTP error! Status: ${response.status}`);
-//         }
-//         console.log(response)
-//         const data = await response.json();
-//         console.log('Profile created successfully:', data);
-//     } catch (error) {
-//         console.error('Error creating profile:', error);
-//           console.error('Error details:', error.message, error.name, error.stack);
-//           console.log(error.stack)
-//     }
-// };
-  </script>
-     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  // Call the fetchData function
+  fetchData();
+</script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </html>
