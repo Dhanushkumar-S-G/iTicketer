@@ -2,6 +2,12 @@ body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 1rem;
   background: #182430;
+  min-height: 100vh;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('/static/bg2.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 
 .font-weight-100 {
@@ -27,9 +33,7 @@ body {
 }
 
 #showcase-background-1 {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url('/static/bg2.png');
-  height: 100vh;
+  min-height: 100vh;
 }
 
 #showcase-background-2 {
